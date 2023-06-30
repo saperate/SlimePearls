@@ -12,14 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import static net.fabricmc.slimepearls.main.REDSTONEPEARL;
@@ -63,7 +60,7 @@ public class RedstonePearlEntity extends ThrownItemEntity {
         if (!stuck) {
             System.out.println("New Pearl");
             for (int i = 0; i < 32; ++i) {
-                this.world.addParticle(ParticleTypes.LAVA, this.getX() + this.random.nextDouble() * 1.0,
+                this.world.addParticle(ParticleTypes.POOF, this.getX() + this.random.nextDouble() * 1.0,
                         this.getY() + this.random.nextDouble() * 1.0,
                         this.getZ() + this.random.nextDouble() * 1.0,
                         this.random.nextGaussian(), 0.0, this.random.nextGaussian());
@@ -116,10 +113,9 @@ public class RedstonePearlEntity extends ThrownItemEntity {
     }
 
     public ItemStack asItemStack() {
-        ItemStack stack = new ItemStack(main.REDSTONEPEARLITEM); // ModItems.SLIME_PEARL_ITEM is the item type for your
-                                                              // entity
+        ItemStack stack = new ItemStack(main.REDSTONEPEARLITEM);
         NbtCompound tag = new NbtCompound();
-        tag.putUuid("EntityUUID", this.getUuid()); // Store the UUID of the entity in the item's tag
+        tag.putUuid("EntityUUID", this.getUuid());
         stack.setNbt(tag);
         return stack;
     }

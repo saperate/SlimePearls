@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.slimepearls.entity.PhantomPearlEntity;
 import net.fabricmc.slimepearls.entity.PhantomPearlEntityRenderer;
 import net.fabricmc.slimepearls.entity.RedstonePearlEntity;
+import net.fabricmc.slimepearls.entity.RedstonePearlEntityRenderer;
 import net.fabricmc.slimepearls.entity.SlimePearlEntity;
 import net.fabricmc.slimepearls.entity.SlimePearlEntityRenderer;
 import net.fabricmc.slimepearls.item.PhantomPearl;
@@ -65,6 +66,7 @@ public class main implements ModInitializer {
 	public void onInitialize() {
 		EntityRendererRegistry.register(SLIMEPEARL, (context) -> new SlimePearlEntityRenderer(context));
 		EntityRendererRegistry.register(PHANTOMPEARL, (context) -> new PhantomPearlEntityRenderer(context));
+		EntityRendererRegistry.register(REDSTONEPEARL, (context) -> new RedstonePearlEntityRenderer(context));
 		LOGGER.info("Hello Fabric world!");
 	}
 }

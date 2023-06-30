@@ -12,13 +12,13 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
-import static net.fabricmc.slimepearls.main.SLIMEPEARLITEM;;
+import static net.fabricmc.slimepearls.main.REDSTONEPEARLITEM;
 
-public class RedstonePearlEntityRenderer extends EntityRenderer<SlimePearlEntity> {
+public class RedstonePearlEntityRenderer extends EntityRenderer<RedstonePearlEntity> {
 
     private final ItemRenderer itemRenderer;
 
-    public static final ItemStack STACK = new ItemStack(SLIMEPEARLITEM);
+    public static final ItemStack STACK = new ItemStack(REDSTONEPEARLITEM);
 
 
     public RedstonePearlEntityRenderer(EntityRendererFactory.Context context) {
@@ -28,7 +28,7 @@ public class RedstonePearlEntityRenderer extends EntityRenderer<SlimePearlEntity
     
 
     @Override
-    public void render(SlimePearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(RedstonePearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(MathHelper.lerp(tickDelta, entity.prevYaw, entity.getYaw()) + 180.0F));
         itemRenderer.renderItem(
@@ -44,9 +44,9 @@ public class RedstonePearlEntityRenderer extends EntityRenderer<SlimePearlEntity
     }
 
     @Override
-    public Identifier getTexture(SlimePearlEntity entity) {
+    public Identifier getTexture(RedstonePearlEntity entity) {
         // Return the texture identifier for your entity
-        return new Identifier("sapswackystuff", "textures/entity/slime_pearl.png");
+        return new Identifier("sapswackystuff", "textures/entity/redstone_pearl.png");
     }
 
 }

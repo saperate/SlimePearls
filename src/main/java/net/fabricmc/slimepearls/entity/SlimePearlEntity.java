@@ -87,12 +87,14 @@ public class SlimePearlEntity extends ThrownItemEntity {
 
                     numBounces = numBounces - 1;
 
+                    int velocity = 1;
+
                     if (blockHit.getSide() == Direction.SOUTH || blockHit.getSide() == Direction.NORTH) {
-                        this.setVelocity(normal.x * -1, normal.y *-1, normal.z, 1, 0f);
+                        this.setVelocity(normal.x * -1, normal.y *-1, normal.z, velocity, 0f);
                     } else if (blockHit.getSide() == Direction.EAST || blockHit.getSide() == Direction.WEST) {
-                        this.setVelocity(normal.x, normal.y * -1, normal.z * -1, 1, 0f);
+                        this.setVelocity(normal.x, normal.y * -1, normal.z * -1, velocity, 0f);
                     } else {
-                        this.setVelocity(normal.x * -1, normal.y, normal.z * -1, 1, 0f);
+                        this.setVelocity(normal.x * -1, normal.y, normal.z * -1, velocity, 0f);
                     }
 
                     System.out.print(" " + this.numBounces);

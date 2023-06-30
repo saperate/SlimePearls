@@ -1,6 +1,11 @@
 package net.fabricmc.slimepearls.item;
 
+
+
+import java.util.List;
+
 import net.fabricmc.slimepearls.entity.SlimePearlEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -27,8 +33,7 @@ public class SlimePearl extends Item {
         user.getItemCooldownManager().set(this, 1);
         if (!world.isClient) {
             SlimePearlEntity enderPearlEntity = new SlimePearlEntity(world, user);
-            NbtCompound tag = itemStack.getOrCreateNbt();
-            int numBounces = tag.getInt("numBounces");
+            int numBounces = this.getNumBounces(itemStack);
             enderPearlEntity.setNumBounces(numBounces);
             enderPearlEntity.setItem(itemStack);
             enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
@@ -39,5 +44,17 @@ public class SlimePearl extends Item {
             itemStack.decrement(1);
         }
         return TypedActionResult.success(itemStack, world.isClient());
+    }
+
+    
+
+    public int getNumBounces(ItemStack itemStack){
+        NbtCompound tag = itemStack.getOrCreateNbt();
+        return tag.getInt("numBounces");
+    }
+
+    @Override
+    public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
+        tooltip.add(Text.translatable("item.sapswackystuff.slime_pearl.tooltip", getNumBounces(itemStack)));
     }
 }

@@ -1,6 +1,9 @@
 package net.fabricmc.slimepearls.item;
 
+import java.util.List;
+
 import net.fabricmc.slimepearls.entity.RedstonePearlEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,6 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -27,8 +31,7 @@ public class RedstonePearl extends Item {
         user.getItemCooldownManager().set(this, 1);
         if (!world.isClient) {
             RedstonePearlEntity enderPearlEntity = new RedstonePearlEntity(world, user);
-            NbtCompound tag = itemStack.getOrCreateNbt();
-            int numBounces = tag.getInt("numBounces");
+            int numBounces = getNumBounces(itemStack);
             enderPearlEntity.setNumTime(numBounces);
             enderPearlEntity.setItem(itemStack);
             enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 1f);
@@ -39,5 +42,15 @@ public class RedstonePearl extends Item {
             itemStack.decrement(1);
         }
         return TypedActionResult.success(itemStack, world.isClient());
+    }
+
+    public int getNumBounces(ItemStack itemStack){
+        NbtCompound tag = itemStack.getOrCreateNbt();
+        return tag.getInt("numBounces");
+    }
+
+    @Override
+    public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
+        tooltip.add(Text.translatable("item.sapswackystuff.redstone_pearl.tooltip", getNumBounces(itemStack)));
     }
 }

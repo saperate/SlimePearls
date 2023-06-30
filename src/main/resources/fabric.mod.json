@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "sapswackystuff",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Wacky Pearls",
+  "description": "Cool pearls",
   "authors": [
-    "Me!"
+    "Saperate (#7285 on discord)"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
