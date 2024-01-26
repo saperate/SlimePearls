@@ -1,19 +1,46 @@
 ## License
-### Sap's Common Sense License (SCSL)
-*To have the right to use this code, you MUST respect and use this license on any project that you make using this code. 
-This is done so that every product that stems from this project remains free and open.*
-___
-This code is available to anyone, as long as they are not explicitly barred from using it. As such, you can do any of these with this code: 
-* Modify
-* Repackage
-* Upload/Publish to any ethical and lawful platform
-* Do anything which is not disallowed here
-___
-You may NOT however use this code for: 
-* Criminal / Morally dubious activities (Which includes but is not limited to: hacking, phishing, scamming, plagiarism)
-* Claim this work entirely as your own (Just credit me and provide a link to this repo)
-* Train any and all AI model (You must have explicit, written consent)
-* Use a paywall, microtransactions or use of any pay to win/pay to play, this code and any transformation done to it MUST remain free, without any advertisements, donations are fine
-___
-If you fit in ANY of these descriptions, you must ask for explicit, written consent to use the code.
-* You are a corporation (This includes anything which is not an individual)
+### Sap's Common Sense License (SCSL) v1.0
+
+*By using this code, you agree to adhere to the terms of the Sap's Common Sense License.*
+
+1. **Usage Rights:**
+   - You have the right to use, modify, repackage, and publish this code on any ethical and lawful platform, as long as you respect and use this license on any project that incorporates this code.
+
+2. **Permitted Actions:**
+   - You are permitted to:
+     - Modify the code
+     - Repackage the code
+     - Upload/publish on any ethical and lawful platform
+     - Perform any actions not explicitly disallowed here
+
+3. **Prohibited Actions:**
+   - You may NOT use this code for:
+     - Criminal/morally dubious activities (e.g., hacking, phishing, scamming)
+     - Claiming this work entirely as your own (credit must be given with a link to this repository)
+     - Training any AI model without explicit, written consent
+     - Implementing paywalls, microtransactions, pay-to-win, or pay-to-play models; the code and its derivatives MUST remain free, without advertisements (donations are acceptable)
+
+4. **Consent Requirement:**
+   - If you fall into any of these descriptions, you must obtain explicit, written consent before using the code:
+     - You are a corporation (individuals within a corporation are exempt for personal use)
+     - You intend to use the code for purposes not explicitly permitted herein
+
+5. **Ethical and Lawful Platforms:**
+ - A lawful platform complies with local laws. In the context of ethicality, avoid use on platforms engaging in activities such as physical/sexual abuse, slavery, murder, and other widely accepted unethical practices. Use of this code is permitted on platforms meeting both criteria
+
+6. **AI Model Usage:**
+   - To gain consent for AI model training, contact the original owner providing:
+     - Intentions with the finished model
+     - Information on monetization
+     - Your status as a corporation or an individual
+
+7. **Enforcement:**
+   - This license operates on trust and respect within the community. While the primary goal is to foster collaboration and innovation, egregious violations may necessitate corrective action. Users are encouraged to engage in open communication and seek resolution in case of disputes. Enforcement, if required, may involve community awareness, and, in extreme cases, legal action. Verification of consent may be requested in case of disputes.
+
+8. **Warranty and Liability:**
+   - The owner disclaims liability for damages. No warranty is provided. Use the code at your own risk.
+
+9. **International Considerations:**
+    - This license is applicable internationally. In the absence of local laws, refer to international laws for compliance.
+
+This license is subject to change, and users are encouraged to check for updates.
