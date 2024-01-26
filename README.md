@@ -22,20 +22,5 @@ To download the jar for this mod and also see which dependency you need, please 
 
 ## License
 ### Sap's Common Sense License (SCSL)
-*To have the right to use this code, you **MUST** respect and use this license on any and all projects that are made using this code. 
-This is done so that every product that stems from this project remains free and open.*
-___
-This code is available to anyone, as long as they are not explicitly barred from using it. As such, you can do any of these with this code: 
-* Modify
-* Repackage
-* Upload/Publish to any ethical and lawful platform
-* Do anything which is not disallowed here
-___
-You may **NOT** however use this code for: 
-* Criminal / Morally dubious activities (Which includes but is not limited to: hacking, phishing, scamming, plagiarism)
-* Claim this work entirely as your own (Just credit me and provide a link to this repo)
-* Train any and all AI model (You must have explicit, written consent)
-* Use a paywall, microtransactions or use of any pay to win/pay to play, this code and any transformation done to it **MUST** remain free, without any advertisements
-___
-If you fit in **ANY** of these descriptions, you must ask for explicit, written consent to use the code.
-* You are a corporation (This includes anything which is not an individual)
+*To have the right to use this code, you **MUST** use this license on any and all projects that are made using this code.* 
+To read details about this license, refer to the license tab from this repository, it outlines everything you need to know before using this code
