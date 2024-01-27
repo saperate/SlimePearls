@@ -27,7 +27,7 @@ import static dev.saperate.WackyPearls.SLIMEPEARL;
 import static dev.saperate.WackyPearls.SLIMEPEARLITEM;
 
 public class SlimePearlEntity extends ThrownItemEntity {
-    private int numBounces = 8;
+    private int numBounces = 1;
 
     public SlimePearlEntity(EntityType<SlimePearlEntity> entityType, World world) {
         super(entityType, world);
@@ -87,8 +87,6 @@ public class SlimePearlEntity extends ThrownItemEntity {
                     } else {
                         this.setVelocity(normal.x * -1, normal.y, normal.z * -1, velocity, 0f);
                     }
-
-                    System.out.print(" " + this.numBounces);
 
                 }
             }

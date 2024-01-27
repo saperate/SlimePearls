@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:ender_pearl"
+        },
+        {
+            "item": "minecraft:slime_ball"
+        }
+    ],
+    "result": {
+        "item": "sapswackystuff:slime_pearl",
+        "count": 1,
+        "group": "slime_pearl_group"
+    }
+}
