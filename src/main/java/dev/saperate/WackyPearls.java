@@ -1,9 +1,7 @@
 package dev.saperate;
 
-import dev.saperate.entity.RedstonePearlEntity;
-import dev.saperate.entity.RedstonePearlEntityRenderer;
-import dev.saperate.entity.SlimePearlEntity;
-import dev.saperate.entity.SlimePearlEntityRenderer;
+import dev.saperate.entity.*;
+import dev.saperate.item.PhantomPearl;
 import dev.saperate.item.RedstonePearl;
 import dev.saperate.item.SlimePearl;
 import net.fabricmc.api.ModInitializer;
@@ -44,10 +42,22 @@ public class WackyPearls implements ModInitializer {
 			FabricEntityTypeBuilder.<RedstonePearlEntity>create(SpawnGroup.MISC, RedstonePearlEntity::new)
 					.dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build());
 
+	public static final PhantomPearl PHANTOMPEARLITEM = Registry.register(Registries.ITEM,
+			new Identifier("sapswackystuff", "phantom_pearl"),
+			new PhantomPearl(new FabricItemSettings()
+					.maxCount(16)));
+
+	public static final EntityType<PhantomPearlEntity> PHANTOMPEARL = Registry.register(
+			Registries.ENTITY_TYPE,
+			new Identifier("sapswackystuff", "phantom_pearl"),
+			FabricEntityTypeBuilder.<PhantomPearlEntity>create(SpawnGroup.MISC, PhantomPearlEntity::new)
+					.dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build());
+
 	@Override
 	public void onInitialize() {
 		EntityRendererRegistry.register(SLIMEPEARL, (context) -> new SlimePearlEntityRenderer(context));
 		EntityRendererRegistry.register(REDSTONEPEARL, (context) -> new RedstonePearlEntityRenderer(context));
+		EntityRendererRegistry.register(PHANTOMPEARL, (context) -> new PhantomPearlEntityRenderer(context));
 		LOGGER.info("Hello from wacky pearls!");
 	}
 }
