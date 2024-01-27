@@ -1,6 +1,6 @@
 package dev.saperate.item;
 
-import dev.saperate.entity.SlimePearlEntity;
+import dev.saperate.entity.RedstonePearlEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class SlimePearl extends Item {
-    private static final int maxBounce = 8;
+public class RedstonePearl extends Item {
+    private static final int maxTime = 8;
 
-    public SlimePearl(Settings settings) {
+    public RedstonePearl(Settings settings) {
         super(settings);
     }
 
@@ -29,52 +29,52 @@ public class SlimePearl extends Item {
         ItemStack handStack = user.getStackInHand(hand);
         ItemStack offHandStack = user.getOffHandStack();
 
-        if(!user.isSneaking()){ //Launching pearl
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+        if (!user.isSneaking()) { //Launching pearl
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
             user.getItemCooldownManager().set(this, 1);
             if (!world.isClient) {
-                SlimePearlEntity slimePearlEntity = new SlimePearlEntity(world, user);
-                int numBounces = getNumBounces(handStack);
-                slimePearlEntity.setNumBounces(numBounces);
-                slimePearlEntity.setItem(handStack);
-                slimePearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
-                world.spawnEntity(slimePearlEntity);
+                RedstonePearlEntity redstonePearlEntity = new RedstonePearlEntity(world, user);
+                int numBounces = getNumTime(handStack);
+                redstonePearlEntity.setNumTime(numBounces);
+                redstonePearlEntity.setItem(handStack);
+                redstonePearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 1f);
+                world.spawnEntity(redstonePearlEntity);
             }
             user.incrementStat(Stats.USED.getOrCreateStat(this));
             if (!user.getAbilities().creativeMode) {
                 handStack.decrement(1);
             }
-        }else if(offHandStack.getItem() == Items.SLIME_BALL && handStack.getCount() == 1){ //Adding bounces
-            int diff = maxBounce - getNumBounces(handStack);
+        } else if (offHandStack.getItem() == Items.REDSTONE && handStack.getCount() == 1) { //Adding bounces
+            int diff = maxTime - getNumTime(handStack);
             int count = Math.min(offHandStack.getCount(), diff);
 
             if (!user.getAbilities().creativeMode) {
                 offHandStack.decrement(count);
             }
-            setNumBounces(handStack,getNumBounces(handStack) + count);
+            setNumTime(handStack, getNumTime(handStack) + count);
         }
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public int getNumBounces(ItemStack itemStack){
+    public int getNumTime(ItemStack itemStack) {
         NbtCompound tag = itemStack.getOrCreateNbt();
         int count = tag.getInt("numBounces");
 
-        if(count == 0){
+        if (count == 0) {
             count++;
         }
-        setNumBounces(itemStack,count);
+        setNumTime(itemStack, count);
         return count;
     }
 
-    public void setNumBounces(ItemStack itemStack, int val){
+    public void setNumTime(ItemStack itemStack, int val) {
         NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putInt("numBounces",val);
+        tag.putInt("numBounces", val);
     }
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        tooltip.add(Text.translatable("item.sapswackystuff.slime_pearl.tooltip", getNumBounces(itemStack)));
+        tooltip.add(Text.translatable("item.sapswackystuff.redstone_pearl.tooltip", getNumTime(itemStack)));
     }
 }

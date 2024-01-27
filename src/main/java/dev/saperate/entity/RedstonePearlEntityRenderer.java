@@ -10,19 +10,19 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class SlimePearlEntityRenderer extends EntityRenderer<SlimePearlEntity> {
+public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEntity> {
 
     private final ItemRenderer itemRenderer;
 
 
-    public SlimePearlEntityRenderer(EntityRendererFactory.Context context) {
+    public RedstonePearlEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.itemRenderer = MinecraftClient.getInstance().getItemRenderer();
     }
 
 
     @Override
-    public void render(SlimePearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(RedstonePearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
 
         matrices.translate(0.0D, 0.15D, 0.0D);
@@ -35,8 +35,8 @@ public class SlimePearlEntityRenderer extends EntityRenderer<SlimePearlEntity> {
     }
 
     @Override
-    public Identifier getTexture(SlimePearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/slime_pearl.png");
+    public Identifier getTexture(RedstonePearlEntity entity) {
+        return new Identifier("sapswackystuff", "textures/entity/redstone_pearl.png");
     }
 
 }
