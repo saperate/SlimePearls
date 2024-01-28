@@ -10,6 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -18,17 +21,18 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityLookup;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 import static dev.saperate.WackyPearls.REDSTONEPEARL;
 import static dev.saperate.WackyPearls.REDSTONEPEARLITEM;
 
 public class RedstonePearlEntity extends ThrownItemEntity {
-    private int tickCount = 0;
-    private int numTime = 200;
-    private Vec3d initPos;
-    private Vec3d initVel;
+    private int tickCount = 0, numTime = 200;
     private Boolean stuck = false;
+    private Entity stuckEntity;
 
     public RedstonePearlEntity(EntityType<RedstonePearlEntity> entityType, World world) {
         super(entityType, world);
@@ -36,6 +40,7 @@ public class RedstonePearlEntity extends ThrownItemEntity {
 
     public RedstonePearlEntity(World world, LivingEntity owner) {
         super(REDSTONEPEARL, owner, world);
+        setOwner(owner);
     }
 
     @Override
@@ -50,32 +55,32 @@ public class RedstonePearlEntity extends ThrownItemEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
+        if (stuckEntity != null){
+            return;
+        }
         Entity entity = entityHitResult.getEntity();
         entity.setVelocity(entity.getVelocity().add(this.getVelocity()));
+        stuckEntity = entity;
+        stuck = true;
+        this.setVelocity(new Vec3d(0,0,0));
+        this.setNoGravity(true);
+        this.setInvisible(true);
+
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!stuck) {
-            System.out.println("New Pearl");
-            for (int i = 0; i < 32; ++i) {
-                this.world.addParticle(ParticleTypes.POOF, this.getX() + this.random.nextDouble() * 1.0,
-                        this.getY() + this.random.nextDouble() * 1.0,
-                        this.getZ() + this.random.nextDouble() * 1.0,
-                        this.random.nextGaussian(), 0.0, this.random.nextGaussian());
-            }
+            makeParticles(ParticleTypes.POOF,16,this);
             world.playSound(null, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),
                     SoundEvents.BLOCK_DISPENSER_FAIL,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            initPos = new Vec3d(this.getX(), this.getY(), this.getZ()).add(hitResult.getPos()).add(hitResult.getPos())
-                    .add(hitResult.getPos()).multiply(0.25);
-            initVel = new Vec3d(this.getVelocity().x, this.getVelocity().y, this.getVelocity().z).multiply(0.001);
             stuck = true;
+            this.setVelocity(new Vec3d(0,0,0));
+            this.setNoGravity(true);
+            this.setInvisible(true);
         }
-        this.requestTeleport(initPos.x, initPos.y, initPos.z);
-        this.setVelocity(initVel);
-        this.setNoGravity(true);
     }
 
 
@@ -88,22 +93,43 @@ public class RedstonePearlEntity extends ThrownItemEntity {
         }
         if (entity instanceof PlayerEntity && !entity.isAlive()) {
             this.discard();
-        } else if(!stuck ) {
-            super.tick();
         }
+        super.tick();
+        this.age = 1;
 
         if(stuck) {
             tickCount++;
-            if (tickCount >= numTime) {
-                if (entity.hasVehicle()) {
-                    entity.requestTeleportAndDismount(this.getX(), this.getY(), this.getZ());
-                } else {
-                    entity.requestTeleport(this.getX(), this.getY(), this.getZ());
+            if(stuckEntity != null){
+                if(stuckEntity.isSneaking()){
+                    tpToPearl(entity);
+                    this.discard();
                 }
-                entity.damage(this.getDamageSources().fall(), 5.0f);
+                this.requestTeleport(stuckEntity.getX(),stuckEntity.getY(),stuckEntity.getZ());
+                makeParticles(ParticleTypes.PORTAL,16,stuckEntity);
+            }
+            if (tickCount >= numTime) {
+                tpToPearl(entity);
                 this.discard();
             }
         }
+    }
+
+    public void makeParticles(ParticleEffect effect, int amount,Entity curr){
+        for (int i = 0; i < amount; ++i) {
+            this.world.addParticle(effect, curr.getX() + this.random.nextDouble() *  0.5f,
+                    curr.getY() + this.random.nextDouble() * 0.5f,
+                    curr.getZ() + this.random.nextDouble() *  0.5f,
+                    this.random.nextGaussian(), 0.0, this.random.nextGaussian());
+        }
+    }
+
+    public void tpToPearl(Entity entity){
+        if (entity.hasVehicle()) {
+            entity.requestTeleportAndDismount(this.getX(), this.getY(), this.getZ());
+        } else {
+            entity.requestTeleport(this.getX(), this.getY(), this.getZ());
+        }
+        entity.damage(this.getDamageSources().fall(), 5.0f);
     }
 
     @Override
@@ -123,4 +149,5 @@ public class RedstonePearlEntity extends ThrownItemEntity {
         stack.setNbt(tag);
         return stack;
     }
+
 }

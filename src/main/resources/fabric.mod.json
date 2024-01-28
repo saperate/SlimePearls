@@ -3,16 +3,16 @@
 	"id": "wacky-pearls",
 	"version": "${version}",
 	"name": "Wacky pearls",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Cool pearls",
 	"authors": [
-		"Me!"
+		"Saperate (#7285 on discord)"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/wacky-pearls/icon.png",
+	"license": "SCSL (visit mod page to view it)",
+	"icon": "assets/sapswackystuff/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

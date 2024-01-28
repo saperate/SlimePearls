@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class RedstonePearl extends Item {
-    private static final int maxTime = 8;
+    private static final int maxTime = 64;
 
     public RedstonePearl(Settings settings) {
         super(settings);
@@ -36,6 +36,7 @@ public class RedstonePearl extends Item {
             if (!world.isClient) {
                 RedstonePearlEntity redstonePearlEntity = new RedstonePearlEntity(world, user);
                 int numBounces = getNumTime(handStack);
+                redstonePearlEntity.setOwner(user);
                 redstonePearlEntity.setNumTime(numBounces);
                 redstonePearlEntity.setItem(handStack);
                 redstonePearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 1f);
