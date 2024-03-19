@@ -1,6 +1,7 @@
 package dev.saperate;
 
 import dev.saperate.entity.*;
+import dev.saperate.item.LoversPearl;
 import dev.saperate.item.PhantomPearl;
 import dev.saperate.item.RedstonePearl;
 import dev.saperate.item.SlimePearl;
@@ -9,6 +10,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -53,11 +55,24 @@ public class WackyPearls implements ModInitializer {
 			FabricEntityTypeBuilder.<PhantomPearlEntity>create(SpawnGroup.MISC, PhantomPearlEntity::new)
 					.dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build());
 
+	public static final LoversPearl LOVERSPEARLITEM = Registry.register(Registries.ITEM,
+			new Identifier("sapswackystuff", "lovers_pearl"),
+			new LoversPearl(new FabricItemSettings()
+					.maxCount(1)));
+
+	public static final EntityType<LoversPearlEntity> LOVERSPEARL = Registry.register(
+			Registries.ENTITY_TYPE,
+			new Identifier("sapswackystuff", "lovers_pearl"),
+			FabricEntityTypeBuilder.<LoversPearlEntity>create(SpawnGroup.MISC, LoversPearlEntity::new)
+					.dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build());
+
 	@Override
 	public void onInitialize() {
-		EntityRendererRegistry.register(SLIMEPEARL, (context) -> new SlimePearlEntityRenderer(context));
-		EntityRendererRegistry.register(REDSTONEPEARL, (context) -> new RedstonePearlEntityRenderer(context));
-		EntityRendererRegistry.register(PHANTOMPEARL, (context) -> new PhantomPearlEntityRenderer(context));
+		EntityRendererRegistry.register(SLIMEPEARL, SlimePearlEntityRenderer::new);
+		EntityRendererRegistry.register(REDSTONEPEARL, RedstonePearlEntityRenderer::new);
+		EntityRendererRegistry.register(PHANTOMPEARL, PhantomPearlEntityRenderer::new);
+		EntityRendererRegistry.register(LOVERSPEARL, LoversPearlEntityRenderer::new);
+		DispenserBlock.registerBehavior(LOVERSPEARLITEM,LOVERSPEARLITEM);
 		LOGGER.info("Hello from wacky pearls!");
 	}
 }
