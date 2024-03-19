@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class RedstonePearl extends Item {
-    private static final int maxTime = 64;
+    private static final int maxTime = 3600;
 
     public RedstonePearl(Settings settings) {
         super(settings);
