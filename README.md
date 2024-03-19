@@ -14,7 +14,7 @@ If you have any suggestions on what to add feel free to let me know here!
 
 ### The redstone pearl:
 - It sticks to any surface, waits and teleports you once the wait is over
-- The timer is determined by the amount of redstone dust you used in the crafting table (8 seconds max)
+- The timer is determined by the amount of redstone dust you used in the crafting table (1 hour max)
 
 ## Setup
 
