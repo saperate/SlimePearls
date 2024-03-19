@@ -7,7 +7,7 @@
     "item.sapswackystuff.redstone_pearl.tooltip": "Will wait %d seconds before teleporting",
     "item.sapswackystuff.lovers_pearl": "Lovers Pearl",
     "item.sapswackystuff.lovers_pearl.tooltip": "Will teleport %d",
-    "item.sapswackystuff.lovers_pearl.tooltip.no_owner": "An celibate pearl%d shift-click to bind yourself to it",
+    "item.sapswackystuff.lovers_pearl.tooltip.no_owner": "A celibate pearl \n shift-click to bind yourself to it",
     "item.sapswackystuff.lovers_pearl.tooltip.shifting": "Lorem ipsum dolor sit amet"
 }
 
