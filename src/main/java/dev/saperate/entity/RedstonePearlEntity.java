@@ -30,6 +30,7 @@ import static dev.saperate.WackyPearls.REDSTONEPEARL;
 import static dev.saperate.WackyPearls.REDSTONEPEARLITEM;
 
 public class RedstonePearlEntity extends ThrownItemEntity {
+    private final World world = getWorld();
     private int tickCount = 0, numTime = 200;
     private Boolean stuck = false;
     private Entity stuckEntity;
@@ -136,7 +137,7 @@ public class RedstonePearlEntity extends ThrownItemEntity {
     @Nullable
     public Entity moveToWorld(ServerWorld destination) {
         Entity entity = this.getOwner();
-        if (entity != null && entity.world.getRegistryKey() != destination.getRegistryKey()) {
+        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
             this.setOwner(null);
         }
         return super.moveToWorld(destination);

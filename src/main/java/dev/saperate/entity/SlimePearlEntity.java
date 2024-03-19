@@ -27,6 +27,7 @@ import static dev.saperate.WackyPearls.SLIMEPEARL;
 import static dev.saperate.WackyPearls.SLIMEPEARLITEM;
 
 public class SlimePearlEntity extends ThrownItemEntity {
+    private final World world = getWorld();
     private int numBounces = 1;
 
     public SlimePearlEntity(EntityType<SlimePearlEntity> entityType, World world) {
@@ -107,7 +108,7 @@ public class SlimePearlEntity extends ThrownItemEntity {
     @Nullable
     public Entity moveToWorld(ServerWorld destination) {
         Entity entity = this.getOwner();
-        if (entity != null && entity.world.getRegistryKey() != destination.getRegistryKey()) {
+        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
             this.setOwner(null);
         }
         return super.moveToWorld(destination);

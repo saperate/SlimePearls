@@ -5,7 +5,7 @@
 	"name": "Wacky pearls",
 	"description": "Cool pearls",
 	"authors": [
-		"Saperate (#7285 on discord)"
+		"Saperate"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -27,7 +27,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.6",
-		"minecraft": "~1.19.4",
+		"minecraft": ">=1.20",
 		"java": ">=17",
 		"fabric-api": "*"
 	},

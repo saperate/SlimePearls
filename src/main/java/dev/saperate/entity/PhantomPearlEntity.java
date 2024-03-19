@@ -24,6 +24,7 @@ import static dev.saperate.WackyPearls.PHANTOMPEARL;
 import static dev.saperate.WackyPearls.PHANTOMPEARLITEM;
 
 public class PhantomPearlEntity extends ThrownItemEntity {
+    private final World world = getWorld();
     private int numBounces = 8;
     private Vec3d lastBlockPos;
 
@@ -55,7 +56,7 @@ public class PhantomPearlEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         for (int i = 0; i < 32; ++i) {
-            this.world.addParticle(ParticleTypes.ASH, this.getX() + this.random.nextDouble() * 1.0,
+            world.addParticle(ParticleTypes.ASH, this.getX() + this.random.nextDouble() * 1.0,
                     this.getY() + this.random.nextDouble() * 1.0,
                     this.getZ() + this.random.nextDouble() * 1.0,
                     this.random.nextGaussian(), 0.0, this.random.nextGaussian());
@@ -111,7 +112,7 @@ public class PhantomPearlEntity extends ThrownItemEntity {
     @Nullable
     public Entity moveToWorld(ServerWorld destination) {
         Entity entity = this.getOwner();
-        if (entity != null && entity.world.getRegistryKey() != destination.getRegistryKey()) {
+        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
             this.setOwner(null);
         }
         return super.moveToWorld(destination);
