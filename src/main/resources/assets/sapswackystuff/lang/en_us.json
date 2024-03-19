@@ -5,9 +5,9 @@
     "item.sapswackystuff.phantom_pearl.tooltip": "Will travel through %d blocks before teleporting",
     "item.sapswackystuff.redstone_pearl": "Redstone Pearl",
     "item.sapswackystuff.redstone_pearl.tooltip": "Will wait %d seconds before teleporting",
-    "item.sapswackystuff.lovers_pearl": "Lovers Pearl",
+    "item.sapswackystuff.lovers_pearl": "Lover's Pearl",
     "item.sapswackystuff.lovers_pearl.tooltip": "Will teleport %d",
-    "item.sapswackystuff.lovers_pearl.tooltip.no_owner": "A celibate pearl \n shift-click to bind yourself to it",
-    "item.sapswackystuff.lovers_pearl.tooltip.shifting": "Lorem ipsum dolor sit amet"
+    "item.sapswackystuff.lovers_pearl.tooltip.no_owner": "An unbound pearl. <br>shift-click to bind yourself to it",
+    "item.sapswackystuff.lovers_pearl.tooltip.expanded": "Lorem ipsum dolor sit amet"
 }
 

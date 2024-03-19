@@ -1,16 +1,12 @@
 package dev.saperate.item;
 
 import dev.saperate.entity.LoversPearlEntity;
-import dev.saperate.entity.PhantomPearlEntity;
 import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -20,8 +16,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.world.World;
-
 import java.util.List;
+import static dev.saperate.utils.SapsUtils.*;
 
 public class LoversPearl extends Item implements DispenserBehavior {
     private Entity owner;
@@ -80,19 +76,17 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        if(Screen.hasShiftDown()){//todo make this better
-            tooltip.add(Text.translatable("item.sapswackystuff.lovers_pearl.tooltip.shifting"));
-        }else if(owner != null){
-            tooltip.add(Text.translatable("item.sapswackystuff.lovers_pearl.tooltip", owner.getDisplayName()));
+        if(owner != null){
+            addToTooltip(tooltip, "item.sapswackystuff.lovers_pearl.tooltip", owner.getDisplayName());
         }else{
-            tooltip.add(Text.translatable("item.sapswackystuff.lovers_pearl.tooltip.no_owner", "\n"));
+            addTranslatable(tooltip, "item.sapswackystuff.lovers_pearl.tooltip.no_owner");
         }
     }
 
     @Override
     public ItemStack dispense(BlockPointer pointer, ItemStack stack) {
         System.err.println("Tried to dispense lovers pearl");
-        return null;
+        return stack;
     }
 
 }
