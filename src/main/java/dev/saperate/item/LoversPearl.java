@@ -2,12 +2,15 @@ package dev.saperate.item;
 
 import dev.saperate.entity.LoversPearlEntity;
 import net.minecraft.block.dispenser.DispenserBehavior;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -17,10 +20,11 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.world.World;
 import java.util.List;
+import java.util.UUID;
+
 import static dev.saperate.utils.SapsUtils.*;
 
 public class LoversPearl extends Item implements DispenserBehavior {
-    private Entity owner;
 
     public LoversPearl(Settings settings) {
         super(settings);
@@ -40,8 +44,8 @@ public class LoversPearl extends Item implements DispenserBehavior {
             user.getItemCooldownManager().set(this, 1);
             if (!world.isClient) {
                 LoversPearlEntity enderPearlEntity = new LoversPearlEntity(world, user);
-                int numBounces = getNumBlocks(handStack);
-                enderPearlEntity.setNumBounces(numBounces);
+                //int numBounces = getNumBlocks(handStack);
+                enderPearlEntity.setNumBounces(0);
                 enderPearlEntity.setItem(handStack);
                 enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
                 world.spawnEntity(enderPearlEntity);
@@ -51,31 +55,33 @@ public class LoversPearl extends Item implements DispenserBehavior {
                 handStack.decrement(1);
             }
         }else { //is sneaking
-            if(owner == null){
-                owner = user;
+            if(!world.isClient && getOwner(handStack, world) == null){
+                setOwner(handStack, user);
             }
         }
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public int getNumBlocks(ItemStack itemStack){
+    public PlayerEntity getOwner(ItemStack itemStack, World world){
         NbtCompound tag = itemStack.getOrCreateNbt();
-        int count = tag.getInt("numBounces");
-
-        if(count == 0){
-            count++;
+        UUID ownerUUID;
+        try{
+             ownerUUID = tag.getUuid("owner");
+        }catch (Exception e){
+            return null;
         }
-        setNumBlocks(itemStack,count);
-        return count;
+
+        return world.getPlayerByUuid(ownerUUID);
     }
 
-    public void setNumBlocks(ItemStack itemStack, int val){
+    public void setOwner(ItemStack itemStack, PlayerEntity owner){
         NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putInt("numBounces",val);
+        tag.putUuid("owner", owner.getUuid());
     }
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
+        Entity owner = getOwner(itemStack,world);
         if(owner != null){
             addToTooltip(tooltip, "item.sapswackystuff.lovers_pearl.tooltip", owner.getDisplayName());
         }else{
