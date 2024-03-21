@@ -1,5 +1,6 @@
 package dev.saperate.item;
 
+import dev.saperate.WackyPearls;
 import dev.saperate.entity.SlimePearlEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,7 @@ public class SlimePearl extends Item {
         if(!user.isSneaking()){ //Launching pearl
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            user.getItemCooldownManager().set(this, 1);
+            WackyPearls.cooldownPearls(user,20);
             if (!world.isClient) {
                 SlimePearlEntity slimePearlEntity = new SlimePearlEntity(world, user);
                 int numBounces = getNumBounces(handStack);

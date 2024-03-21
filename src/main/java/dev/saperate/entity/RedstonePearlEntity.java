@@ -73,10 +73,11 @@ public class RedstonePearlEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!stuck) {
+            if(getOwner() == null){
+                discard();
+                return;
+            }
             makeParticles(ParticleTypes.POOF,16,this);
-            world.playSound(null, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),
-                    SoundEvents.BLOCK_DISPENSER_FAIL,
-                    SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
             stuck = true;
             this.setVelocity(new Vec3d(0,0,0));
             this.setNoGravity(true);
@@ -131,6 +132,10 @@ public class RedstonePearlEntity extends ThrownItemEntity {
             entity.requestTeleport(this.getX(), this.getY(), this.getZ());
         }
         entity.damage(this.getDamageSources().fall(), 5.0f);
+        world.playSound(null,
+                this.getBlockPos(),
+                SoundEvents.ENTITY_PLAYER_TELEPORT,
+                SoundCategory.PLAYERS);
     }
 
     @Override

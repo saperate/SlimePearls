@@ -14,6 +14,9 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.EnderPearlItem;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -58,7 +61,7 @@ public class WackyPearls implements ModInitializer {
 	public static final LoversPearl LOVERSPEARLITEM = Registry.register(Registries.ITEM,
 			new Identifier("sapswackystuff", "lovers_pearl"),
 			new LoversPearl(new FabricItemSettings()
-					.maxCount(64)));
+					.maxCount(1)));
 
 	public static final EntityType<LoversPearlEntity> LOVERSPEARL = Registry.register(
 			Registries.ENTITY_TYPE,
@@ -75,4 +78,16 @@ public class WackyPearls implements ModInitializer {
 		DispenserBlock.registerBehavior(LOVERSPEARLITEM,LOVERSPEARLITEM);
 		LOGGER.info("Hello from wacky pearls!");
 	}
+
+	public static void cooldownPearls(PlayerEntity user, int amount){
+		user.getItemCooldownManager().set(Items.ENDER_PEARL, amount);
+		cooldownModdedPearls(user,amount);
+	}
+	public static void cooldownModdedPearls(PlayerEntity user, int amount){
+		user.getItemCooldownManager().set(SLIMEPEARLITEM, amount);
+		user.getItemCooldownManager().set(PHANTOMPEARLITEM, amount);
+		user.getItemCooldownManager().set(REDSTONEPEARLITEM, amount);
+		user.getItemCooldownManager().set(LOVERSPEARLITEM, amount);
+	}
+
 }

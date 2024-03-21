@@ -15,36 +15,6 @@ import java.util.stream.Stream;
 
 public final class SapsUtils {
 
-    /**
-     *Used for getting the yaw from a block direction since it commonly breaks arctan2
-     */
-    public static double getYawFromDirection(Direction dir){
-        switch (dir.getName()){
-            case "up":
-                return -90;
-            case "down":
-                return 90;
-            case "north":
-                return -90;
-            default:
-                return 0;
-        }
-    }
-
-    /**
-     *Used for getting the pitch from a block direction since it commonly breaks arctan2
-     */
-    public static double getPitchFromDirection(Direction dir){
-        switch (dir.getName()){
-            case "east":
-                return -90;
-            case "west":
-                return 90;
-            default:
-                return 0;
-        }
-    }
-
 
     /**
      * Will automatically detect and use expanded tooltips.

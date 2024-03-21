@@ -16,6 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -60,6 +61,7 @@ public class LoversPearlEntity extends ThrownItemEntity {
                     this.getZ() + this.random.nextDouble(),
                     this.random.nextGaussian(), 0.0, this.random.nextGaussian());
         }
+
         if (!this.world.isClient && !this.isRemoved()) {
             Entity entity = this.getOwner();
             ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) entity;
@@ -73,6 +75,10 @@ public class LoversPearlEntity extends ThrownItemEntity {
                 this.discard();
             }
         }
+        world.playSound(null,
+                this.getBlockPos(),
+                SoundEvents.ENTITY_PLAYER_TELEPORT,
+                SoundCategory.PLAYERS);
     }
 
     @Override

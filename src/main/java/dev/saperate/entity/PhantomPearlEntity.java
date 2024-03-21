@@ -1,5 +1,6 @@
 package dev.saperate.entity;
 
+import dev.saperate.item.SlimePearl;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +26,7 @@ import static dev.saperate.WackyPearls.PHANTOMPEARLITEM;
 
 public class PhantomPearlEntity extends ThrownItemEntity {
     private final World world = getWorld();
-    private int numBounces = 8;
+    private int numPhases = 8;
     private Vec3d lastBlockPos;
 
     public PhantomPearlEntity(EntityType<PhantomPearlEntity> entityType, World world) {
@@ -41,8 +42,8 @@ public class PhantomPearlEntity extends ThrownItemEntity {
         return Items.SLIME_BALL;
     }
 
-    public void setNumBounces(int num) {
-        this.numBounces = num;
+    public void setNumPhases(int num) {
+        this.numPhases = num;
     }
 
     @Override
@@ -56,46 +57,46 @@ public class PhantomPearlEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         for (int i = 0; i < 32; ++i) {
-            world.addParticle(ParticleTypes.ASH, this.getX() + this.random.nextDouble() * 1.0,
-                    this.getY() + this.random.nextDouble() * 1.0,
-                    this.getZ() + this.random.nextDouble() * 1.0,
+            world.addParticle(ParticleTypes.ASH, this.getX() + this.random.nextDouble(),
+                    this.getY() + this.random.nextDouble(),
+                    this.getZ() + this.random.nextDouble(),
                     this.random.nextGaussian(), 0.0, this.random.nextGaussian());
         }
+
         if (!this.world.isClient && !this.isRemoved()) {
             Entity entity = this.getOwner();
-            ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) entity;
-            if (entity instanceof ServerPlayerEntity) {
-                if (numBounces <= 0) {
-                    if (entity.hasVehicle()) {
-                        serverPlayerEntity.requestTeleportAndDismount(this.getX(), this.getY(), this.getZ());
-                    } else {
-                        entity.requestTeleport(this.getX(), this.getY(), this.getZ());
-                    }
-                    entity.damage(this.getDamageSources().fall(), 5.0f);
-                    this.discard();
+            if (entity == null) {
+                this.discard();
+                return;
+            }
+            if (numPhases <= 0) {
+                SlimePearlEntity.tpToPearl(entity, this);
+            }
+            if (hitResult.getType() == HitResult.Type.BLOCK) {
+
+                Vec3d entityPos = this.getPos();
+                Vec3d blockPos = hitResult.getPos();
+                Vec3d normal = entityPos.subtract(blockPos).normalize();
+
+                if (lastBlockPos != null && lastBlockPos != blockPos) {
+                    numPhases = numPhases - 1;
+
+                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.BLOCK_STONE_BREAK,
+                            SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
                 }
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                lastBlockPos = blockPos;
 
-                    Vec3d entityPos = this.getPos();
-                    Vec3d blockPos = hitResult.getPos();
-                    Vec3d normal = entityPos.subtract(blockPos).normalize();
-
-                    if (lastBlockPos != null && lastBlockPos != blockPos) {
-                        numBounces = numBounces - 1;
-
-                        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                                SoundEvents.BLOCK_STONE_BREAK,
-                                SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-                    }
-                    lastBlockPos = blockPos;
-
-                    this.setVelocity(normal.x, normal.y, normal.z, -1f, 0f);
-
-                    System.out.print(" " + this.numBounces);
-
-                }
+                this.setVelocity(normal.x, normal.y, normal.z, -1f, 0f);
             }
         }
+        if (numPhases <= 0) {
+            world.playSound(null,
+                    this.getBlockPos(),
+                    SoundEvents.ENTITY_PLAYER_TELEPORT,
+                    SoundCategory.PLAYERS);
+        }
+
     }
 
     @Override

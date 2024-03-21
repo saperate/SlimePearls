@@ -1,5 +1,6 @@
 package dev.saperate.item;
 
+import dev.saperate.WackyPearls;
 import dev.saperate.entity.PhantomPearlEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,11 +34,11 @@ public class PhantomPearl extends Item {
         if(!user.isSneaking()) { //Launching pearl
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            user.getItemCooldownManager().set(this, 1);
+            WackyPearls.cooldownPearls(user,20);
             if (!world.isClient) {
                 PhantomPearlEntity enderPearlEntity = new PhantomPearlEntity(world, user);
-                int numBounces = getNumBlocks(handStack);
-                enderPearlEntity.setNumBounces(numBounces);
+                int numPhases = getNumBlocks(handStack);
+                enderPearlEntity.setNumPhases(numPhases);
                 enderPearlEntity.setItem(handStack);
                 enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
                 world.spawnEntity(enderPearlEntity);
@@ -60,7 +61,7 @@ public class PhantomPearl extends Item {
 
     public int getNumBlocks(ItemStack itemStack){
         NbtCompound tag = itemStack.getOrCreateNbt();
-        int count = tag.getInt("numBounces");
+        int count = tag.getInt("numPhases");
 
         if(count == 0){
             count++;
@@ -71,7 +72,7 @@ public class PhantomPearl extends Item {
 
     public void setNumBlocks(ItemStack itemStack, int val){
         NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putInt("numBounces",val);
+        tag.putInt("numPhases",val);
     }
 
     @Override

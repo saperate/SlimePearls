@@ -1,5 +1,6 @@
 package dev.saperate.item;
 
+import dev.saperate.WackyPearls;
 import dev.saperate.entity.LoversPearlEntity;
 import dev.saperate.utils.SapsUtils;
 import net.minecraft.block.DispenserBlock;
@@ -45,12 +46,12 @@ public class LoversPearl extends Item implements DispenserBehavior {
         ItemStack handStack = user.getStackInHand(hand);
         ItemStack offHandStack = user.getOffHandStack();
 
-        UUID ownerUUID = getOwnerUUID(handStack, world);
+        UUID ownerUUID = getOwnerUUID(handStack);
 
         if (!user.isSneaking() && ownerUUID != null && world.getPlayerByUuid(ownerUUID) != null) {
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            user.getItemCooldownManager().set(this, 1);
+            WackyPearls.cooldownPearls(user,20);
             if (!world.isClient) {
                 LoversPearlEntity loversPearlEntity = new LoversPearlEntity(world, world.getPlayerByUuid(ownerUUID));
                 loversPearlEntity.setItem(handStack);
@@ -69,7 +70,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public static String getOwnerName(ItemStack itemStack, World world) {
+    public static String getOwnerName(ItemStack itemStack) {
         NbtCompound tag = itemStack.getOrCreateNbt();
         String name;
         try {
@@ -81,7 +82,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
         return name;
     }
 
-    public static UUID getOwnerUUID(ItemStack itemStack, World world) {
+    public static UUID getOwnerUUID(ItemStack itemStack) {
         NbtCompound tag = itemStack.getOrCreateNbt();
         UUID ownerUUID;
         try {
@@ -101,7 +102,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        String ownerName = getOwnerName(itemStack, world);
+        String ownerName = getOwnerName(itemStack);
         if (!ownerName.isEmpty()) {
             addToTooltip(tooltip, "item.sapswackystuff.lovers_pearl.tooltip", ownerName);
         } else {
@@ -111,7 +112,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
     @Override
     public ItemStack dispense(BlockPointer pointer, ItemStack stack) {
-        UUID ownerUUID = getOwnerUUID(stack, pointer.world());
+        UUID ownerUUID = getOwnerUUID(stack);
 
         if (ownerUUID == null) {
             return stack;
