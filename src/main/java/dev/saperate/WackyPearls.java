@@ -58,7 +58,7 @@ public class WackyPearls implements ModInitializer {
 	public static final LoversPearl LOVERSPEARLITEM = Registry.register(Registries.ITEM,
 			new Identifier("sapswackystuff", "lovers_pearl"),
 			new LoversPearl(new FabricItemSettings()
-					.maxCount(1)));
+					.maxCount(64)));
 
 	public static final EntityType<LoversPearlEntity> LOVERSPEARL = Registry.register(
 			Registries.ENTITY_TYPE,

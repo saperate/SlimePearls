@@ -24,8 +24,6 @@ import static dev.saperate.WackyPearls.*;
 
 public class LoversPearlEntity extends ThrownItemEntity {
     private final World world = getWorld();
-    private int numBounces = 8;
-    private Vec3d lastBlockPos;
 
     public LoversPearlEntity(EntityType<LoversPearlEntity> entityType, World world) {
         super(entityType, world);
@@ -35,14 +33,16 @@ public class LoversPearlEntity extends ThrownItemEntity {
         super(LOVERSPEARL, owner, world);
     }
 
-    @Override
-    protected Item getDefaultItem() {
-        return Items.SLIME_BALL;
+    public LoversPearlEntity(World world, LivingEntity owner, double x, double y, double z){
+        super(LOVERSPEARL,x,y,z,world);
+        setOwner(owner);
     }
 
-    public void setNumBounces(int num) {
-        this.numBounces = num;
+    @Override
+    protected Item getDefaultItem() {
+        return LOVERSPEARLITEM;
     }
+
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
@@ -55,44 +55,22 @@ public class LoversPearlEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         for (int i = 0; i < 32; ++i) {
-            world.addParticle(ParticleTypes.ASH, this.getX() + this.random.nextDouble() * 1.0,
-                    this.getY() + this.random.nextDouble() * 1.0,
-                    this.getZ() + this.random.nextDouble() * 1.0,
+            world.addParticle(ParticleTypes.HEART, this.getX() + this.random.nextDouble(),
+                    this.getY() + this.random.nextDouble(),
+                    this.getZ() + this.random.nextDouble(),
                     this.random.nextGaussian(), 0.0, this.random.nextGaussian());
         }
         if (!this.world.isClient && !this.isRemoved()) {
             Entity entity = this.getOwner();
             ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) entity;
             if (entity instanceof ServerPlayerEntity) {
-                if (numBounces <= 0) {
-                    if (entity.hasVehicle()) {
-                        serverPlayerEntity.requestTeleportAndDismount(this.getX(), this.getY(), this.getZ());
-                    } else {
-                        entity.requestTeleport(this.getX(), this.getY(), this.getZ());
-                    }
-                    entity.damage(this.getDamageSources().fall(), 5.0f);
-                    this.discard();
+                if (entity.hasVehicle()) {
+                    serverPlayerEntity.requestTeleportAndDismount(this.getX(), this.getY(), this.getZ());
+                } else {
+                    entity.requestTeleport(this.getX(), this.getY(), this.getZ());
                 }
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
-
-                    Vec3d entityPos = this.getPos();
-                    Vec3d blockPos = hitResult.getPos();
-                    Vec3d normal = entityPos.subtract(blockPos).normalize();
-
-                    if (lastBlockPos != null && lastBlockPos != blockPos) {
-                        numBounces = numBounces - 1;
-
-                        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                                SoundEvents.BLOCK_STONE_BREAK,
-                                SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-                    }
-                    lastBlockPos = blockPos;
-
-                    this.setVelocity(normal.x, normal.y, normal.z, -1f, 0f);
-
-                    System.out.print(" " + this.numBounces);
-
-                }
+                entity.damage(this.getDamageSources().fall(), 5.0f);
+                this.discard();
             }
         }
     }
@@ -118,9 +96,9 @@ public class LoversPearlEntity extends ThrownItemEntity {
     }
 
     public ItemStack asItemStack() {
-        ItemStack stack = new ItemStack(PHANTOMPEARLITEM);
+        ItemStack stack = new ItemStack(LOVERSPEARLITEM);
         NbtCompound tag = new NbtCompound();
-        tag.putUuid("EntityUUID", this.getUuid()); // Store the UUID of the entity in the item's tag
+        tag.putUuid("EntityUUID", this.getUuid());
         stack.setNbt(tag);
         return stack;
     }
