@@ -1,6 +1,7 @@
 package dev.saperate.item;
 
 import dev.saperate.entity.LoversPearlEntity;
+import dev.saperate.utils.SapsUtils;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
@@ -68,7 +69,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public static String getOwnerName(ItemStack itemStack, World world){
+    public static String getOwnerName(ItemStack itemStack, World world) {
         NbtCompound tag = itemStack.getOrCreateNbt();
         String name;
         try {
@@ -100,7 +101,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        String ownerName = getOwnerName(itemStack,world);
+        String ownerName = getOwnerName(itemStack, world);
         if (!ownerName.isEmpty()) {
             addToTooltip(tooltip, "item.sapswackystuff.lovers_pearl.tooltip", ownerName);
         } else {
@@ -110,29 +111,13 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
     @Override
     public ItemStack dispense(BlockPointer pointer, ItemStack stack) {
-        PlayerEntity owner = pointer.world().getPlayerByUuid(getOwnerUUID(stack, pointer.world()));
+        UUID ownerUUID = getOwnerUUID(stack, pointer.world());
 
-        Direction direction = pointer.state().get(DispenserBlock.FACING);
-        double offsetX = direction.getOffsetX();
-        double offsetY = direction.getOffsetY();
-        double offsetZ = direction.getOffsetZ();
-
-        double yaw = Math.atan2(offsetX, offsetZ);
-        yaw = Math.toDegrees(yaw);
-
-        double distanceXZ = Math.sqrt(offsetX * offsetX + offsetZ * offsetZ);
-        double pitch = Math.atan2(offsetY, distanceXZ);
-        pitch = Math.toDegrees(pitch);
-
-        System.out.println(yaw);
-        System.out.println(pitch);
-        System.out.println("----------------");
-        System.out.println(owner.getYaw());
-        System.out.println(owner.getPitch());
-
-
-
-        if (owner == null) {
+        if (ownerUUID == null) {
+            return stack;
+        }
+        PlayerEntity owner = pointer.world().getPlayerByUuid(ownerUUID);
+        if(owner == null){
             return stack;
         }
 
@@ -141,20 +126,20 @@ public class LoversPearl extends Item implements DispenserBehavior {
 
         if (!owner.getWorld().isClient) {
             stack.decrement(1);
-
-
-
             LoversPearlEntity loversPearlEntity = new LoversPearlEntity(owner.getEntityWorld(), owner,
-                    pointer.pos().getX() + offsetX,
-                    pointer.pos().getY() + offsetY,
-                    pointer.pos().getZ() + offsetZ
+                    pointer.pos().getX() + 0.5,
+                    pointer.pos().getY() + 0.5,
+                    pointer.pos().getZ() + 0.5
             );
 
-
-
-
+            Direction direction = pointer.state().get(DispenserBlock.FACING);
             loversPearlEntity.setItem(stack);
-            loversPearlEntity.setVelocity(pitch, yaw, 0.0f, 1f, 0f);
+            loversPearlEntity.setVelocity(
+                    direction.getOffsetX(),
+                    direction.getOffsetY(),
+                    direction.getOffsetZ(),
+                    1f, 0f
+            );
             owner.getWorld().spawnEntity(loversPearlEntity);
         }
         return stack;

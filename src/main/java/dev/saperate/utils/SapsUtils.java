@@ -3,6 +3,8 @@ package dev.saperate.utils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +13,38 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public abstract class SapsUtils {
+public final class SapsUtils {
+
+    /**
+     *Used for getting the yaw from a block direction since it commonly breaks arctan2
+     */
+    public static double getYawFromDirection(Direction dir){
+        switch (dir.getName()){
+            case "up":
+                return -90;
+            case "down":
+                return 90;
+            case "north":
+                return -90;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     *Used for getting the pitch from a block direction since it commonly breaks arctan2
+     */
+    public static double getPitchFromDirection(Direction dir){
+        switch (dir.getName()){
+            case "east":
+                return -90;
+            case "west":
+                return 90;
+            default:
+                return 0;
+        }
+    }
+
 
     /**
      * Will automatically detect and use expanded tooltips.
@@ -53,4 +86,5 @@ public abstract class SapsUtils {
         return raw.split("%d").length;
     }
 
+    private SapsUtils(){}
 }
