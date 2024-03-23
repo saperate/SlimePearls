@@ -81,7 +81,7 @@ public class PhantomPearlEntity extends ThrownItemEntity {
                 if (lastBlockPos != null && lastBlockPos != blockPos) {
                     numPhases = numPhases - 1;
 
-                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                    world.playSound(null, this.getX(), this.getY(), this.getZ(),
                             SoundEvents.BLOCK_STONE_BREAK,
                             SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
                 }

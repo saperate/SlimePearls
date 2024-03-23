@@ -49,11 +49,15 @@ public class LoversPearl extends Item implements DispenserBehavior {
         UUID ownerUUID = getOwnerUUID(handStack);
 
         if (!user.isSneaking() && ownerUUID != null && world.getPlayerByUuid(ownerUUID) != null) {
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            WackyPearls.cooldownPearls(user,20);
+            WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
-                LoversPearlEntity loversPearlEntity = new LoversPearlEntity(world, world.getPlayerByUuid(ownerUUID));
+                LoversPearlEntity loversPearlEntity = new LoversPearlEntity(world, world.getPlayerByUuid(ownerUUID),
+                        user.getX(),
+                        user.getEyeY() - 0.10000000149011612,
+                        user.getZ()
+                        );
                 loversPearlEntity.setItem(handStack);
                 loversPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
                 world.spawnEntity(loversPearlEntity);
@@ -62,8 +66,8 @@ public class LoversPearl extends Item implements DispenserBehavior {
             if (!user.getAbilities().creativeMode) {
                 handStack.decrement(1);
             }
-        } else { //is sneaking
-            if (!world.isClient && ownerUUID == null) {
+        } else {
+            if (user.isSneaking() && !world.isClient && ownerUUID == null) {
                 setOwner(handStack, user);
             }
         }
@@ -122,18 +126,18 @@ public class LoversPearl extends Item implements DispenserBehavior {
             return stack;
         }
 
-        owner.getWorld().playSound(null, pointer.pos(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+        owner.getWorld().playSound(null, pointer.pos(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                 SoundCategory.NEUTRAL, 0.5f, 0.4f / (owner.getWorld().getRandom().nextFloat() * 0.4f + 0.8f));
 
         if (!owner.getWorld().isClient) {
             stack.decrement(1);
+            Direction direction = pointer.state().get(DispenserBlock.FACING);
             LoversPearlEntity loversPearlEntity = new LoversPearlEntity(owner.getEntityWorld(), owner,
-                    pointer.pos().getX() + 0.5,
-                    pointer.pos().getY() + 0.5,
-                    pointer.pos().getZ() + 0.5
+                    pointer.pos().getX() + direction.getOffsetX() + 0.5,
+                    pointer.pos().getY() + direction.getOffsetY() + 0.5,
+                    pointer.pos().getZ() + direction.getOffsetZ() + 0.5
             );
 
-            Direction direction = pointer.state().get(DispenserBlock.FACING);
             loversPearlEntity.setItem(stack);
             loversPearlEntity.setVelocity(
                     direction.getOffsetX(),

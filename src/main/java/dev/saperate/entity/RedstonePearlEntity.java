@@ -60,6 +60,8 @@ public class RedstonePearlEntity extends ThrownItemEntity {
             return;
         }
         Entity entity = entityHitResult.getEntity();
+        world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
+                SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
         entity.setVelocity(entity.getVelocity().add(this.getVelocity()));
         stuckEntity = entity;
         stuck = true;
@@ -77,6 +79,8 @@ public class RedstonePearlEntity extends ThrownItemEntity {
                 discard();
                 return;
             }
+            world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
+                    SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
             makeParticles(ParticleTypes.POOF,16,this);
             stuck = true;
             this.setVelocity(new Vec3d(0,0,0));

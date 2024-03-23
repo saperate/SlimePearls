@@ -71,7 +71,7 @@ public class SlimePearlEntity extends ThrownItemEntity {
                 Vec3d blockPos = hitResult.getPos();
                 Vec3d normal = entityPos.subtract(blockPos).normalize();
 
-                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+                world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
                         SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
 
                 numBounces = numBounces - 1;
@@ -88,7 +88,7 @@ public class SlimePearlEntity extends ThrownItemEntity {
 
             }
         }
-        if (numBounces <= 0) {
+        if (numBounces < 0) {
             world.playSound(null,
                     this.getBlockPos(),
                     SoundEvents.ENTITY_PLAYER_TELEPORT,

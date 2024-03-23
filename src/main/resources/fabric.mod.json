@@ -8,8 +8,8 @@
 		"Saperate"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/wacky-pearls",
+		"sources": "https://github.com/saperate/SlimePearls"
 	},
 	"license": "SCSL (visit mod page to view it)",
 	"icon": "assets/sapswackystuff/icon.png",
@@ -17,9 +17,6 @@
 	"entrypoints": {
 		"main": [
 			"dev.saperate.WackyPearls"
-		],
-		"fabric-datagen": [
-			"dev.saperate.WackyPearlsDataGenerator"
 		]
 	},
 	"mixins": [

@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static dev.saperate.utils.SapsUtils.addToTooltip;
+
 public class PhantomPearl extends Item {
     public int maxBlocks = 8;
 
@@ -32,9 +34,9 @@ public class PhantomPearl extends Item {
         ItemStack offHandStack = user.getOffHandStack();
 
         if(!user.isSneaking()) { //Launching pearl
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            WackyPearls.cooldownPearls(user,20);
+            WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
                 PhantomPearlEntity enderPearlEntity = new PhantomPearlEntity(world, user);
                 int numPhases = getNumBlocks(handStack);
@@ -77,6 +79,6 @@ public class PhantomPearl extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        tooltip.add(Text.translatable("item.sapswackystuff.phantom_pearl.tooltip", getNumBlocks(itemStack)));
+        addToTooltip(tooltip, "item.sapswackystuff.phantom_pearl.tooltip", getNumBlocks(itemStack));
     }
 }

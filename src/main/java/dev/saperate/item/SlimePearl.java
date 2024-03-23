@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static dev.saperate.utils.SapsUtils.addToTooltip;
+
 public class SlimePearl extends Item {
     private static final int maxBounce = 8;
 
@@ -31,9 +33,9 @@ public class SlimePearl extends Item {
         ItemStack offHandStack = user.getOffHandStack();
 
         if(!user.isSneaking()){ //Launching pearl
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK,
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            WackyPearls.cooldownPearls(user,20);
+            WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
                 SlimePearlEntity slimePearlEntity = new SlimePearlEntity(world, user);
                 int numBounces = getNumBounces(handStack);
@@ -76,6 +78,6 @@ public class SlimePearl extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        tooltip.add(Text.translatable("item.sapswackystuff.slime_pearl.tooltip", getNumBounces(itemStack)));
+        addToTooltip(tooltip, "item.sapswackystuff.slime_pearl.tooltip", getNumBounces(itemStack));
     }
 }
