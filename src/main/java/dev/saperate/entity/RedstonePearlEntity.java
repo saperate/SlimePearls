@@ -30,6 +30,7 @@ import static dev.saperate.WackyPearls.REDSTONEPEARL;
 import static dev.saperate.WackyPearls.REDSTONEPEARLITEM;
 
 public class RedstonePearlEntity extends ThrownItemEntity {
+    private final World world = getWorld();
     private int tickCount = 0, numTime = 200;
     private Boolean stuck = false;
     private Entity stuckEntity;
@@ -59,6 +60,8 @@ public class RedstonePearlEntity extends ThrownItemEntity {
             return;
         }
         Entity entity = entityHitResult.getEntity();
+        world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
+                SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
         entity.setVelocity(entity.getVelocity().add(this.getVelocity()));
         stuckEntity = entity;
         stuck = true;
@@ -72,10 +75,13 @@ public class RedstonePearlEntity extends ThrownItemEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!stuck) {
-            makeParticles(ParticleTypes.POOF,16,this);
-            world.playSound(null, this.getOwner().getX(), this.getOwner().getY(), this.getOwner().getZ(),
-                    SoundEvents.BLOCK_DISPENSER_FAIL,
+            if(getOwner() == null){
+                discard();
+                return;
+            }
+            world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
+            makeParticles(ParticleTypes.POOF,16,this);
             stuck = true;
             this.setVelocity(new Vec3d(0,0,0));
             this.setNoGravity(true);
@@ -130,13 +136,17 @@ public class RedstonePearlEntity extends ThrownItemEntity {
             entity.requestTeleport(this.getX(), this.getY(), this.getZ());
         }
         entity.damage(this.getDamageSources().fall(), 5.0f);
+        world.playSound(null,
+                this.getBlockPos(),
+                SoundEvents.ENTITY_ENDERMAN_TELEPORT,
+                SoundCategory.PLAYERS);
     }
 
     @Override
     @Nullable
     public Entity moveToWorld(ServerWorld destination) {
         Entity entity = this.getOwner();
-        if (entity != null && entity.world.getRegistryKey() != destination.getRegistryKey()) {
+        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
             this.setOwner(null);
         }
         return super.moveToWorld(destination);

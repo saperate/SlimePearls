@@ -1,5 +1,6 @@
 package dev.saperate.item;
 
+import dev.saperate.WackyPearls;
 import dev.saperate.entity.RedstonePearlEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static dev.saperate.utils.SapsUtils.addToTooltip;
+
 public class RedstonePearl extends Item {
     private static final int maxTime = 3600;
 
@@ -30,9 +33,9 @@ public class RedstonePearl extends Item {
         ItemStack offHandStack = user.getOffHandStack();
 
         if (!user.isSneaking()) { //Launching pearl
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_LEVER_CLICK,
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                     SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            user.getItemCooldownManager().set(this, 1);
+            WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
                 RedstonePearlEntity redstonePearlEntity = new RedstonePearlEntity(world, user);
                 int numBounces = getNumTime(handStack);
@@ -76,6 +79,6 @@ public class RedstonePearl extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        tooltip.add(Text.translatable("item.sapswackystuff.redstone_pearl.tooltip", getNumTime(itemStack)));
+        addToTooltip(tooltip, "item.sapswackystuff.redstone_pearl.tooltip", getNumTime(itemStack));
     }
 }

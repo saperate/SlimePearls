@@ -10,19 +10,18 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEntity> {
-
+public class LoversPearlEntityRenderer extends EntityRenderer<LoversPearlEntity> {
     private final ItemRenderer itemRenderer;
 
 
-    public RedstonePearlEntityRenderer(EntityRendererFactory.Context context) {
+    public LoversPearlEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.itemRenderer = MinecraftClient.getInstance().getItemRenderer();
     }
 
 
     @Override
-    public void render(RedstonePearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(LoversPearlEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
 
         matrices.translate(0.0D, 0.15D, 0.0D);
@@ -35,8 +34,8 @@ public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEn
     }
 
     @Override
-    public Identifier getTexture(RedstonePearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/redstone_pearl.png");
+    public Identifier getTexture(LoversPearlEntity entity) {
+        return new Identifier("sapswackystuff", "textures/entity/lovers_pearl.png");
     }
 
 }
