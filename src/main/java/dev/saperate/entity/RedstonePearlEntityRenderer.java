@@ -1,5 +1,6 @@
 package dev.saperate.entity;
 
+import dev.saperate.item.RedstonePearl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -9,6 +10,8 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import static dev.saperate.WackyPearls.REDSTONEPEARLITEM;
 
 public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEntity> {
 
@@ -29,7 +32,7 @@ public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEn
         matrices.multiply(this.dispatcher.getRotation());
         matrices.scale(0.75F, 0.75F, 0.75F);
 
-        this.itemRenderer.renderItem(entity.getStack(), ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), entity.getId());
+        this.itemRenderer.renderItem(REDSTONEPEARLITEM.getDefaultStack(), ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), entity.getId());
 
         matrices.pop();
     }

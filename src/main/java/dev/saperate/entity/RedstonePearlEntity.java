@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,7 @@ import java.util.UUID;
 import static dev.saperate.WackyPearls.REDSTONEPEARL;
 import static dev.saperate.WackyPearls.REDSTONEPEARLITEM;
 
-public class RedstonePearlEntity extends ThrownItemEntity {
+public class RedstonePearlEntity extends PersistentProjectileEntity {
     private final World world = getWorld();
     private int tickCount = 0, numTime = 200;
     private Boolean stuck = false;
@@ -44,10 +45,6 @@ public class RedstonePearlEntity extends ThrownItemEntity {
         setOwner(owner);
     }
 
-    @Override
-    protected Item getDefaultItem() {
-        return Items.REDSTONE;
-    }
 
     public void setNumTime(int num) {
         this.numTime = num * 20;

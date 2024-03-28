@@ -41,7 +41,7 @@ public class RedstonePearl extends Item {
                 int numBounces = getNumTime(handStack);
                 redstonePearlEntity.setOwner(user);
                 redstonePearlEntity.setNumTime(numBounces);
-                redstonePearlEntity.setItem(handStack);
+                //redstonePearlEntity.setItem(handStack);
                 redstonePearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 1f);
                 world.spawnEntity(redstonePearlEntity);
             }
