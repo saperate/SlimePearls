@@ -1,9 +1,11 @@
 package net.fabricmc.slimepearls;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.slimepearls.entity.PhantomPearlEntity;
 import net.fabricmc.slimepearls.entity.PhantomPearlEntityRenderer;
 import net.fabricmc.slimepearls.entity.RedstonePearlEntity;
@@ -64,9 +66,11 @@ public class main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		EntityRendererRegistry.register(SLIMEPEARL, (context) -> new SlimePearlEntityRenderer(context));
-		EntityRendererRegistry.register(PHANTOMPEARL, (context) -> new PhantomPearlEntityRenderer(context));
-		EntityRendererRegistry.register(REDSTONEPEARL, (context) -> new RedstonePearlEntityRenderer(context));
+		if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)) {
+			EntityRendererRegistry.register(SLIMEPEARL, SlimePearlEntityRenderer::new);
+			EntityRendererRegistry.register(PHANTOMPEARL, PhantomPearlEntityRenderer::new);
+			EntityRendererRegistry.register(REDSTONEPEARL, RedstonePearlEntityRenderer::new);
+		}
 		LOGGER.info("Hello Fabric world!");
 	}
 }
