@@ -5,6 +5,7 @@ import dev.saperate.item.LoversPearl;
 import dev.saperate.item.PhantomPearl;
 import dev.saperate.item.RedstonePearl;
 import dev.saperate.item.SlimePearl;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -77,10 +79,13 @@ public class WackyPearls implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		EntityRendererRegistry.register(SLIMEPEARL, SlimePearlEntityRenderer::new);
-		EntityRendererRegistry.register(REDSTONEPEARL, RedstonePearlEntityRenderer::new);
-		EntityRendererRegistry.register(PHANTOMPEARL, PhantomPearlEntityRenderer::new);
-		EntityRendererRegistry.register(LOVERSPEARL, LoversPearlEntityRenderer::new);
+		if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT)){
+			EntityRendererRegistry.register(SLIMEPEARL, SlimePearlEntityRenderer::new);
+			EntityRendererRegistry.register(REDSTONEPEARL, RedstonePearlEntityRenderer::new);
+			EntityRendererRegistry.register(PHANTOMPEARL, PhantomPearlEntityRenderer::new);
+			EntityRendererRegistry.register(LOVERSPEARL, LoversPearlEntityRenderer::new);
+		}
+
 		DispenserBlock.registerBehavior(LOVERSPEARLITEM,LOVERSPEARLITEM);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
