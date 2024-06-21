@@ -93,7 +93,7 @@ public class PhantomPearlEntity extends ThrownItemEntity {
         if (numPhases <= 0) {
             world.playSound(null,
                     this.getBlockPos(),
-                    SoundEvents.ENTITY_PLAYER_TELEPORT,
+                    SoundEvents.ENTITY_ENDERMAN_TELEPORT,
                     SoundCategory.PLAYERS);
         }
 

@@ -77,14 +77,14 @@ public class LoversPearlEntity extends ThrownItemEntity {
         }
         world.playSound(null,
                 this.getBlockPos(),
-                SoundEvents.ENTITY_PLAYER_TELEPORT,
+                SoundEvents.ENTITY_ENDERMAN_TELEPORT,
                 SoundCategory.PLAYERS);
     }
 
     @Override
     public void tick() {
         Entity entity = this.getOwner();
-        if (entity instanceof PlayerEntity && !entity.isAlive() || this.getY() == -10) {
+        if (entity instanceof PlayerEntity && !entity.isAlive() || this.getY() == -1000) {
             this.discard();
         } else {
             super.tick();

@@ -101,7 +101,7 @@ public class LoversPearl extends Item implements DispenserBehavior {
     public static void setOwner(ItemStack itemStack, PlayerEntity owner) {
         NbtCompound tag = itemStack.getOrCreateNbt();
         tag.putUuid("owner", owner.getUuid());
-        tag.putString("ownerName", owner.getNameForScoreboard());
+        tag.putString("ownerName", owner.getEntityName());
     }
 
     @Override
@@ -121,21 +121,21 @@ public class LoversPearl extends Item implements DispenserBehavior {
         if (ownerUUID == null) {
             return stack;
         }
-        PlayerEntity owner = pointer.world().getPlayerByUuid(ownerUUID);
+        PlayerEntity owner = pointer.getWorld().getPlayerByUuid(ownerUUID);
         if(owner == null){
             return stack;
         }
 
-        owner.getWorld().playSound(null, pointer.pos(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
+        owner.getWorld().playSound(null, pointer.getPos(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                 SoundCategory.NEUTRAL, 0.5f, 0.4f / (owner.getWorld().getRandom().nextFloat() * 0.4f + 0.8f));
 
         if (!owner.getWorld().isClient) {
             stack.decrement(1);
-            Direction direction = pointer.state().get(DispenserBlock.FACING);
+            Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             LoversPearlEntity loversPearlEntity = new LoversPearlEntity(owner.getEntityWorld(), owner,
-                    pointer.pos().getX() + direction.getOffsetX() + 0.5,
-                    pointer.pos().getY() + direction.getOffsetY() + 0.5,
-                    pointer.pos().getZ() + direction.getOffsetZ() + 0.5
+                    pointer.getPos().getX() + direction.getOffsetX() + 0.5,
+                    pointer.getPos().getY() + direction.getOffsetY() + 0.5,
+                    pointer.getPos().getZ() + direction.getOffsetZ() + 0.5
             );
 
             loversPearlEntity.setItem(stack);

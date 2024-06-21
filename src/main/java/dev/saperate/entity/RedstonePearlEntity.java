@@ -138,7 +138,7 @@ public class RedstonePearlEntity extends ThrownItemEntity {
         entity.damage(this.getDamageSources().fall(), 5.0f);
         world.playSound(null,
                 this.getBlockPos(),
-                SoundEvents.ENTITY_PLAYER_TELEPORT,
+                SoundEvents.ENTITY_ENDERMAN_TELEPORT,
                 SoundCategory.PLAYERS);
     }
 
