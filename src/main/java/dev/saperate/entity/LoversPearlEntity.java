@@ -34,8 +34,8 @@ public class LoversPearlEntity extends ThrownItemEntity {
         super(LOVERSPEARL, owner, world);
     }
 
-    public LoversPearlEntity(World world, LivingEntity owner, double x, double y, double z){
-        super(LOVERSPEARL,x,y,z,world);
+    public LoversPearlEntity(World world, LivingEntity owner, double x, double y, double z) {
+        super(LOVERSPEARL, x, y, z, world);
         setOwner(owner);
     }
 
