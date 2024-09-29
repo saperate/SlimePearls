@@ -2,12 +2,12 @@ package dev.saperate.item;
 
 import dev.saperate.WackyPearls;
 import dev.saperate.entity.RedstonePearlEntity;
-import net.minecraft.client.item.TooltipContext;
+import dev.saperate.utils.SapsUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -38,9 +38,9 @@ public class RedstonePearl extends Item {
             WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
                 RedstonePearlEntity redstonePearlEntity = new RedstonePearlEntity(world, user);
-                int numBounces = getNumTime(handStack);
+                int numTime = SapsUtils.getCustomInt(handStack, "numTime");
                 redstonePearlEntity.setOwner(user);
-                redstonePearlEntity.setNumTime(numBounces);
+                redstonePearlEntity.setNumTime(numTime);
                 redstonePearlEntity.setItem(handStack);
                 redstonePearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 1f);
                 world.spawnEntity(redstonePearlEntity);
@@ -50,35 +50,19 @@ public class RedstonePearl extends Item {
                 handStack.decrement(1);
             }
         } else if (offHandStack.getItem() == Items.REDSTONE && handStack.getCount() == 1) { //Adding bounces
-            int diff = maxTime - getNumTime(handStack);
+            int diff = maxTime - SapsUtils.getCustomInt(handStack, "numTime");
             int count = Math.min(offHandStack.getCount(), diff);
 
             if (!user.getAbilities().creativeMode) {
                 offHandStack.decrement(count);
             }
-            setNumTime(handStack, getNumTime(handStack) + count);
+            SapsUtils.setCustomInt(handStack, SapsUtils.getCustomInt(handStack, "numTime") + count, "numTime");
         }
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public int getNumTime(ItemStack itemStack) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        int count = tag.getInt("numBounces");
-
-        if (count == 0) {
-            count++;
-        }
-        setNumTime(itemStack, count);
-        return count;
-    }
-
-    public void setNumTime(ItemStack itemStack, int val) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putInt("numBounces", val);
-    }
-
     @Override
-    public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        addToTooltip(tooltip, "item.sapswackystuff.redstone_pearl.tooltip", getNumTime(itemStack));
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        addToTooltip(tooltip, "item.sapswackystuff.redstone_pearl.tooltip", SapsUtils.getCustomInt(stack, "numTime"));
     }
 }

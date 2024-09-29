@@ -109,21 +109,4 @@ public class PhantomPearlEntity extends ThrownItemEntity {
         }
     }
 
-    @Override
-    @Nullable
-    public Entity moveToWorld(ServerWorld destination) {
-        Entity entity = this.getOwner();
-        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
-            this.setOwner(null);
-        }
-        return super.moveToWorld(destination);
-    }
-
-    public ItemStack asItemStack() {
-        ItemStack stack = new ItemStack(PHANTOMPEARLITEM);
-        NbtCompound tag = new NbtCompound();
-        tag.putUuid("EntityUUID", this.getUuid()); // Store the UUID of the entity in the item's tag
-        stack.setNbt(tag);
-        return stack;
-    }
 }

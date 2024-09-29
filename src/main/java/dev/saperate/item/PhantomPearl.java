@@ -2,12 +2,12 @@ package dev.saperate.item;
 
 import dev.saperate.WackyPearls;
 import dev.saperate.entity.PhantomPearlEntity;
-import net.minecraft.client.item.TooltipContext;
+import dev.saperate.utils.SapsUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -39,7 +39,7 @@ public class PhantomPearl extends Item {
             WackyPearls.coolDownPearls(user,20);
             if (!world.isClient) {
                 PhantomPearlEntity enderPearlEntity = new PhantomPearlEntity(world, user);
-                int numPhases = getNumBlocks(handStack);
+                int numPhases = SapsUtils.getCustomInt(handStack, "numBlocks");
                 enderPearlEntity.setNumPhases(numPhases);
                 enderPearlEntity.setItem(handStack);
                 enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1f, 0f);
@@ -50,35 +50,20 @@ public class PhantomPearl extends Item {
                 handStack.decrement(1);
             }
         }else if(offHandStack.getItem() == Items.PHANTOM_MEMBRANE && handStack.getCount() == 1){
-            int diff = maxBlocks - getNumBlocks(handStack);
+            int diff = maxBlocks - SapsUtils.getCustomInt(handStack, "numBlocks");
             int count = Math.min(offHandStack.getCount(), diff);
 
             if (!user.getAbilities().creativeMode) {
                 offHandStack.decrement(count);
             }
-            setNumBlocks(handStack,getNumBlocks(handStack) + count);
+            SapsUtils.setCustomInt(handStack,SapsUtils.getCustomInt(handStack, "numBlocks") + count, "numBlocks");
         }
         return TypedActionResult.success(handStack, world.isClient());
     }
 
-    public int getNumBlocks(ItemStack itemStack){
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        int count = tag.getInt("numPhases");
-
-        if(count == 0){
-            count++;
-        }
-        setNumBlocks(itemStack,count);
-        return count;
-    }
-
-    public void setNumBlocks(ItemStack itemStack, int val){
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putInt("numPhases",val);
-    }
-
     @Override
-    public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        addToTooltip(tooltip, "item.sapswackystuff.phantom_pearl.tooltip", getNumBlocks(itemStack));
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        System.out.println(type.isAdvanced());
+        addToTooltip(tooltip, "item.sapswackystuff.phantom_pearl.tooltip", SapsUtils.getCustomInt(stack, "numBlocks"));
     }
 }

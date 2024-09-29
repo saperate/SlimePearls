@@ -7,12 +7,14 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -75,38 +77,41 @@ public class LoversPearl extends Item implements DispenserBehavior {
     }
 
     public static String getOwnerName(ItemStack itemStack) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        String name;
-        try {
-            name = tag.getString("ownerName");
-        } catch (Exception e) {
-            return "";
+        NbtComponent data = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+        if (data != null) {
+            return data.copyNbt().getString("ownerName");
         }
-
-        return name;
+        return "";
     }
 
     public static UUID getOwnerUUID(ItemStack itemStack) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        UUID ownerUUID;
-        try {
-            ownerUUID = tag.getUuid("owner");
-        } catch (Exception e) {
-            return null;
+        NbtComponent data = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+        if (data != null) {
+            return data.copyNbt().getUuid("owner");
         }
-
-        return ownerUUID;
+        return null;
     }
 
     public static void setOwner(ItemStack itemStack, PlayerEntity owner) {
-        NbtCompound tag = itemStack.getOrCreateNbt();
-        tag.putUuid("owner", owner.getUuid());
-        tag.putString("ownerName", owner.getEntityName());
+        NbtComponent component = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+
+        NbtCompound data;
+        if(component != null){
+            data = component.copyNbt();
+            data.putUuid("owner", owner.getUuid());
+            data.putString("ownerName", owner.getNameForScoreboard());
+        }else {
+            data = new NbtCompound();
+            data.putUuid("owner", owner.getUuid());
+            data.putString("ownerName", owner.getNameForScoreboard());
+        }
+
+        itemStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(data));
     }
 
     @Override
-    public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        String ownerName = getOwnerName(itemStack);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        String ownerName = getOwnerName(stack);
         if (!ownerName.isEmpty()) {
             addToTooltip(tooltip, "item.sapswackystuff.lovers_pearl.tooltip", ownerName);
         } else {
@@ -121,21 +126,21 @@ public class LoversPearl extends Item implements DispenserBehavior {
         if (ownerUUID == null) {
             return stack;
         }
-        PlayerEntity owner = pointer.getWorld().getPlayerByUuid(ownerUUID);
+        PlayerEntity owner = pointer.world().getPlayerByUuid(ownerUUID);
         if(owner == null){
             return stack;
         }
 
-        owner.getWorld().playSound(null, pointer.getPos(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
+        owner.getWorld().playSound(null, pointer.pos(), SoundEvents.ENTITY_ENDER_PEARL_THROW,
                 SoundCategory.NEUTRAL, 0.5f, 0.4f / (owner.getWorld().getRandom().nextFloat() * 0.4f + 0.8f));
 
         if (!owner.getWorld().isClient) {
             stack.decrement(1);
-            Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
+            Direction direction = pointer.state().get(DispenserBlock.FACING);
             LoversPearlEntity loversPearlEntity = new LoversPearlEntity(owner.getEntityWorld(), owner,
-                    pointer.getPos().getX() + direction.getOffsetX() + 0.5,
-                    pointer.getPos().getY() + direction.getOffsetY() + 0.5,
-                    pointer.getPos().getZ() + direction.getOffsetZ() + 0.5
+                    pointer.pos().getX() + direction.getOffsetX() + 0.5,
+                    pointer.pos().getY() + direction.getOffsetY() + 0.5,
+                    pointer.pos().getZ() + direction.getOffsetZ() + 0.5
             );
 
             loversPearlEntity.setItem(stack);

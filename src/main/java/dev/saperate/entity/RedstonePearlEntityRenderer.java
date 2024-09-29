@@ -36,7 +36,7 @@ public class RedstonePearlEntityRenderer  extends EntityRenderer<RedstonePearlEn
 
     @Override
     public Identifier getTexture(RedstonePearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/redstone_pearl.png");
+        return Identifier.of("sapswackystuff", "textures/entity/redstone_pearl.png");
     }
 
 }

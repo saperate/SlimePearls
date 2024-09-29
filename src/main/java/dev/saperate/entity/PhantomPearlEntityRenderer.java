@@ -36,7 +36,7 @@ public class PhantomPearlEntityRenderer extends EntityRenderer<PhantomPearlEntit
 
     @Override
     public Identifier getTexture(PhantomPearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/phantom_pearl.png");
+        return Identifier.of("sapswackystuff", "textures/entity/phantom_pearl.png");
     }
 
 }

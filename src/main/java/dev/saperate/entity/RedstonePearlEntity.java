@@ -142,22 +142,4 @@ public class RedstonePearlEntity extends ThrownItemEntity {
                 SoundCategory.PLAYERS);
     }
 
-    @Override
-    @Nullable
-    public Entity moveToWorld(ServerWorld destination) {
-        Entity entity = this.getOwner();
-        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
-            this.setOwner(null);
-        }
-        return super.moveToWorld(destination);
-    }
-
-    public ItemStack asItemStack() {
-        ItemStack stack = new ItemStack(REDSTONEPEARLITEM);
-        NbtCompound tag = new NbtCompound();
-        tag.putUuid("EntityUUID", this.getUuid());
-        stack.setNbt(tag);
-        return stack;
-    }
-
 }

@@ -1,17 +1,15 @@
 package dev.saperate.utils;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public final class SapsUtils {
 
@@ -54,6 +52,29 @@ public final class SapsUtils {
             tooltip.add(Text.of(str));
         }
         return raw.split("%d").length;
+    }
+
+    public static int getCustomInt(ItemStack itemStack, String name) {
+        NbtComponent data = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+        if (data != null) {
+            return data.copyNbt().getInt(name);
+        }
+        return 1;
+    }
+
+    public static void setCustomInt(ItemStack itemStack, int val, String name) {
+        NbtComponent component = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+
+        NbtCompound data;
+        if(component != null){
+            data = component.copyNbt();
+            data.putInt(name,val);
+        }else {
+            data = new NbtCompound();
+            data.putInt(name,val);
+        }
+
+        itemStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(data));
     }
 
     private SapsUtils(){}

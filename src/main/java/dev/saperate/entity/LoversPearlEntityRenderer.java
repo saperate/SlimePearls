@@ -35,7 +35,7 @@ public class LoversPearlEntityRenderer extends EntityRenderer<LoversPearlEntity>
 
     @Override
     public Identifier getTexture(LoversPearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/lovers_pearl.png");
+        return Identifier.of("sapswackystuff", "textures/entity/lovers_pearl.png");
     }
 
 }

@@ -36,7 +36,7 @@ public class SlimePearlEntityRenderer extends EntityRenderer<SlimePearlEntity> {
 
     @Override
     public Identifier getTexture(SlimePearlEntity entity) {
-        return new Identifier("sapswackystuff", "textures/entity/slime_pearl.png");
+        return Identifier.of("sapswackystuff", "textures/entity/slime_pearl.png");
     }
 
 }

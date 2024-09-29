@@ -90,22 +90,4 @@ public class LoversPearlEntity extends ThrownItemEntity {
             super.tick();
         }
     }
-
-    @Override
-    @Nullable
-    public Entity moveToWorld(ServerWorld destination) {
-        Entity entity = this.getOwner();
-        if (entity != null && entity.getWorld().getRegistryKey() != destination.getRegistryKey()) {
-            this.setOwner(null);
-        }
-        return super.moveToWorld(destination);
-    }
-
-    public ItemStack asItemStack() {
-        ItemStack stack = new ItemStack(LOVERSPEARLITEM);
-        NbtCompound tag = new NbtCompound();
-        tag.putUuid("EntityUUID", this.getUuid());
-        stack.setNbt(tag);
-        return stack;
-    }
 }
